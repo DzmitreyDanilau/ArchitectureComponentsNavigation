@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this@MainActivity, navController)
         NavigationUI.setupWithNavController(binding.navView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
