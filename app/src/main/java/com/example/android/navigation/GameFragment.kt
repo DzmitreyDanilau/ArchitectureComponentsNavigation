@@ -16,6 +16,7 @@
 
 package com.example.android.navigation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,17 +24,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.android.navigation.databinding.FragmentGameBinding
+import timber.log.Timber
 
 class GameFragment : Fragment() {
     data class Question(
             val text: String,
             val answers: List<String>)
 
-    // The first answer is the correct one.  We randomize the answers before showing the text.
-    // All questions must have four answers.  We'd want these to contain references to string
-    // resources so we could internationalize. (Or better yet, don't define the questions in code...)
-    private val questions: MutableList<Question> = mutableListOf(
+    val questions: MutableList<Question> = mutableListOf(
             Question(text = "What is Android Jetpack?",
                     answers = listOf("All of these", "Tools", "Documentation", "Libraries")),
             Question(text = "What is the base class for layouts?",
@@ -57,28 +57,19 @@ class GameFragment : Fragment() {
     )
 
 
-
     lateinit var currentQuestion: Question
     lateinit var answers: MutableList<String>
     private var questionIndex = 0
-    private val numQuestions = Math.min((questions.size + 1) / 2, 3)
+    private val numQuestions = ((questions.size + 1) / 2).coerceAtMost(3)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        // Inflate the layout for this fragment
         val binding = DataBindingUtil.inflate<FragmentGameBinding>(
                 inflater, R.layout.fragment_game, container, false)
-
-        // Shuffles the questions and sets the question index to the first question.
         randomizeQuestions()
-
         // Bind this fragment class to the layout
         binding.game = this
-
-        // Set the onClickListener for the submitButton
-        binding.submitButton.setOnClickListener @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-        { view: View ->
+        binding.submitButton.setOnClickListener{ view: View ->
             val checkedId = binding.questionRadioGroup.checkedRadioButtonId
             // Do nothing if nothing is checked (id == -1)
             if (-1 != checkedId) {
@@ -98,14 +89,54 @@ class GameFragment : Fragment() {
                         setQuestion()
                         binding.invalidateAll()
                     } else {
-                        // We've won!  Navigate to the gameWonFragment.
+                        view.findNavController().navigate(R.id.action_gameFragment_to_gameWonFragment)
                     }
                 } else {
-                    // Game over! A wrong answer sends us to the gameOverFragment.
+                    view.findNavController().navigate(R.id.action_gameFragment_to_gameOverFragment)
                 }
             }
         }
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Timber.d("GameFragment: OnDestroy")
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Timber.d("GameFragment: onAttach")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.d("GameFragment: onResume")
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Timber.d("GameFragment: onStart")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d("GameFragment: onPause")
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("GameFragment: OnDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Timber.d("GameFragment: onDetach")
+
     }
 
     // randomize the questions and set the first question
@@ -115,11 +146,8 @@ class GameFragment : Fragment() {
         setQuestion()
     }
 
-    // Sets the question and randomizes the answers.  This only changes the data, not the UI.
-    // Calling invalidateAll on the FragmentGameBinding updates the data.
     private fun setQuestion() {
         currentQuestion = questions[questionIndex]
-        // randomize the answers into a copy of the array
         answers = currentQuestion.answers.toMutableList()
         // and shuffle them
         answers.shuffle()
