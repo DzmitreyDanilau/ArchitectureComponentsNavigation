@@ -32,7 +32,7 @@ class RulesFragment : Fragment() {
                 .inflate(inflater, R.layout.fragment_rules, container, false)
 
         binding.playButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_rulesFragment_to_gameFragment)
+            it.findNavController().navigate(RulesFragmentDirections.actionRulesFragmentToGameFragment())
         }
         return binding.root
     }

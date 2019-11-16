@@ -12,13 +12,10 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 28
-//    dataBinding {
-//        enabled = true
-//    }
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
-        dataBinding {
-            enabled = true
-        }
         applicationId 'com.example.android.navigation'
         minSdkVersion 19
         targetSdkVersion 28

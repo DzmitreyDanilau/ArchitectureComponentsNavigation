@@ -61,6 +61,12 @@
             app:destination="@id/gameFragment"
             app:popUpTo="@+id/titleFragment"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="numQuestrions"
+            app:argType="integer" />
+        <argument
+            android:name="numCorrect"
+            app:argType="integer" />
     </fragment>
 
     <fragment
