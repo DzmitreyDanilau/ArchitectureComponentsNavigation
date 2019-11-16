@@ -113,7 +113,6 @@ class GameFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Timber.d("GameFragment: onResume")
-
     }
 
     override fun onStart() {
