@@ -42,6 +42,4 @@ class TitleFragment : Fragment() {
                 || return super.onOptionsItemSelected(item)
 
     }
-
-
 }
